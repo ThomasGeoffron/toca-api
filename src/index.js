@@ -28,11 +28,22 @@ mongoose.connection.once('open', () => {
   // eslint-disable-next-line no-unused-vars
   const { Users, Tags, Tunnels, Filters, Kpi, UsersSessions, PageViews, TrackingEvents, MouseMovementEvents } = require('./models')
 
+  const auth = require('./middleware/auth')
+  const admin = require('./middleware/admin')
+
   const { register, login } = require('./controllers/auth')
 
   app.post('/register', register)
 
   app.post('/login', login)
+
+  const users = require('./controllers/users')
+
+  app.get('/users', admin, users.findAll)
+
+  app.get('/users/:id', admin, users.findOne)
+
+  app.patch('/users/:id', admin, users.activate)
 
   app.listen(5002, () => console.log('API listening on port 5002'))
 })

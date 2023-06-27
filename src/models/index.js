@@ -22,6 +22,11 @@ const Users = new mongoose.model('Users', new mongoose.Schema({
     type: String,
     required: true
   },
+  isAdmin: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   active: {
     type: Boolean,
     required: true,

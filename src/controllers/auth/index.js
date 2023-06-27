@@ -1,6 +1,6 @@
 const { Users } = require('../../models')
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const { generateToken } = require('../../helpers/jwt')
 
 const register = async (req, res) => {
   console.log(req)
@@ -22,6 +22,8 @@ const register = async (req, res) => {
     url
   })
 
+  // TODO : send mail in .then()
+
   user.save().then((user) => res.status(201).json(user))
 }
 
@@ -33,7 +35,7 @@ const login = (req, res) => {
     if (user) {
       bcrypt.compare(password, user.password, function (_, result) {
         if (result) {
-          const token = jwt.sign({ sub: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' })
+          const token = generateToken(user)
           return res.status(200).json({ message: 'Logged in succesfully', token })
         }
         res.status(404).json({ message: 'User not found' })
