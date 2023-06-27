@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 const mongoose = require('mongoose')
 
 const Users = new mongoose.model('Users', new mongoose.Schema({
@@ -23,7 +24,8 @@ const Users = new mongoose.model('Users', new mongoose.Schema({
   },
   active: {
     type: Boolean,
-    required: true
+    required: true,
+    default: false
   }
 }))
 
