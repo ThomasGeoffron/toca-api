@@ -1,0 +1,41 @@
+{
+  "name": "toca-api",
+  "version": "1.0.0",
+  "description": "API for Webanalytics project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start:dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThomasGeoffron/toca-api.git"
+  },
+  "keywords": [
+    "analytics",
+    "node",
+    "api"
+  ],
+  "author": "Adel Sen, Coraline Esedji, Océane Renoux, Thomas Geoffron",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThomasGeoffron/toca-api/issues"
+  },
+  "homepage": "https://github.com/ThomasGeoffron/toca-api#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongoose": "^7.3.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1",
+    "eslint": "^8.43.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "nodemon": "^2.0.22"
+  }
+}
