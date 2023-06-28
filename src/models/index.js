@@ -113,10 +113,20 @@ const UsersSessions = new mongoose.model('UsersSessions', new mongoose.Schema({
   endedAt: {
     type: Date,
     required: true
-  }
+  },
+  tags: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
+    }
+  ]
 }))
 
 const PageViews = new mongoose.model('PageViews', new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Users'
+  },
   title: {
     type: String,
     required: true
@@ -128,10 +138,6 @@ const PageViews = new mongoose.model('PageViews', new mongoose.Schema({
   views: {
     type: Number,
     required: true
-  },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Users'
   },
   tags: [
     {
@@ -185,7 +191,13 @@ const MouseMovementEvents = new mongoose.model('MouseMovementEvents', new mongoo
       type: Number,
       required: true
     }
-  }
+  },
+  tags: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
+    }
+  ]
 }))
 
 module.exports = { Users, Tags, Tunnels, Filters, Kpi, UsersSessions, PageViews, TrackingEvents, MouseMovementEvents }

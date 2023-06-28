@@ -30,6 +30,7 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   Tunnels.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, { comment: req.body.comment })
     .then((tag) => res.status(201).json(tag))
+    .catch(() => res.status(400).json({ message: 'An error occured' }))
 }
 
 module.exports = { findAll, findOne, create, update }

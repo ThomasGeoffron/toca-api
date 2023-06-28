@@ -71,5 +71,49 @@ mongoose.connection.once('open', () => {
 
   app.patch('/tunnels/:id', auth, tunnels.update)
 
+  // Events
+
+  // MouseMovements
+
+  const mouseMovements = require('./controllers/events/mouse-movement')
+
+  app.get('/events/mouse-movements', auth, mouseMovements.findAll)
+
+  app.get('/events/mouse-movements/:id', auth, mouseMovements.findOne)
+
+  app.post('/events/mouse-movements', auth, mouseMovements.create)
+
+  // PageViews
+
+  const pageViews = require('./controllers/events/page-views')
+
+  app.get('/events/page-views', auth, pageViews.findAll)
+
+  app.get('/events/page-views/:id', auth, pageViews.findOne)
+
+  app.post('/events/page-views', auth, pageViews.create)
+
+  app.patch('/events/page-views/:id', auth, pageViews.addView)
+
+  // Tracking
+
+  const tracking = require('./controllers/events/tracking')
+
+  app.get('/events/tracking', auth, tracking.findAll)
+
+  app.get('/events/tracking/:id', auth, tracking.findOne)
+
+  app.post('/events/tracking', auth, tracking.create)
+
+  // UserSessions
+
+  const userSessions = require('./controllers/events/user-sessions')
+
+  app.get('/events/user-sessions', auth, userSessions.findAll)
+
+  app.get('/events/user-sessions/:id', auth, userSessions.findOne)
+
+  app.post('/events/user-sessions', auth, userSessions.create)
+
   app.listen(5002, () => console.log('API listening on port 5002'))
 })
