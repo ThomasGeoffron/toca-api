@@ -21,7 +21,7 @@ const create = (req, res) => {
     comment: req.body.comment
   })
 
-  tag.save().then(() => res.status(201).json(tag))
+  tag.save().then((tag) => res.status(201).json(tag))
 }
 
 const update = async (req, res) => {

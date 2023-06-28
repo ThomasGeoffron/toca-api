@@ -46,6 +46,10 @@ const Tags = new mongoose.model('Tags', new mongoose.Schema({
 }))
 
 const Tunnels = new mongoose.model('Tunnel', new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
   comment: {
     type: String,
     required: true

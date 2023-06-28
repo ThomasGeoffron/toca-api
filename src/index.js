@@ -59,5 +59,17 @@ mongoose.connection.once('open', () => {
 
   app.patch('/tags/:id', auth, tags.update)
 
+  // Tunnels
+
+  const tunnels = require('./controllers/tunnels')
+
+  app.get('/tunnels', auth, tunnels.findAll)
+
+  app.get('/tunnels/:id', auth, tunnels.findOne)
+
+  app.post('/tunnels', auth, tunnels.create)
+
+  app.patch('/tunnels/:id', auth, tunnels.update)
+
   app.listen(5002, () => console.log('API listening on port 5002'))
 })
