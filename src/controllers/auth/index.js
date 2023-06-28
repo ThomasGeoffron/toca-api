@@ -1,9 +1,9 @@
 const { Users } = require('../../models')
 const bcrypt = require('bcryptjs')
 const { generateToken } = require('../../helpers/jwt')
+const sendEmail = require('../../helpers/mailer')
 
 const register = async (req, res) => {
-  console.log(req)
   const company = req.body.company
   const kbis = req.body.kbis
   const email = req.body.email
@@ -22,9 +22,10 @@ const register = async (req, res) => {
     url
   })
 
-  // TODO : send mail in .then()
-
-  user.save().then((user) => res.status(201).json(user))
+  user.save().then((user) => {
+    sendEmail(email)
+    res.status(201).json(user)
+  })
 }
 
 const login = (req, res) => {

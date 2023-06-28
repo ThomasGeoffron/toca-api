@@ -23,8 +23,6 @@ mongoose.connect(process.env.MONGO_URL, {
   .catch((error) => console.error(error))
 
 mongoose.connection.once('open', () => {
-  console.log('connected !')
-
   // eslint-disable-next-line no-unused-vars
   const { Users, Tags, Tunnels, Filters, Kpi, UsersSessions, PageViews, TrackingEvents, MouseMovementEvents } = require('./models')
 
