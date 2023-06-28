@@ -29,11 +29,15 @@ mongoose.connection.once('open', () => {
   const auth = require('./middleware/auth')
   const admin = require('./middleware/admin')
 
-  const { register, login } = require('./controllers/auth')
+  // Auth
 
-  app.post('/register', register)
+  const authController = require('./controllers/auth')
 
-  app.post('/login', login)
+  app.post('/register', authController.register)
+
+  app.post('/login', authController.login)
+
+  // Users
 
   const users = require('./controllers/users')
 
@@ -42,6 +46,18 @@ mongoose.connection.once('open', () => {
   app.get('/users/:id', admin, users.findOne)
 
   app.patch('/users/:id', admin, users.activate)
+
+  // Tags
+
+  const tags = require('./controllers/tags')
+
+  app.get('/tags', auth, tags.findAll)
+
+  app.get('/tags/:id', auth, tags.findOne)
+
+  app.post('/tags', auth, tags.create)
+
+  app.patch('/tags/:id', auth, tags.update)
 
   app.listen(5002, () => console.log('API listening on port 5002'))
 })

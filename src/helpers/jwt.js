@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const generateToken = (jwtProps) => {
   const token = jwt.sign(
     {
+      id: jwtProps.id,
       company: jwtProps.company,
       email: jwtProps.email,
       isAdmin: jwtProps.isAdmin
