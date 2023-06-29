@@ -22,9 +22,10 @@ const register = async (req, res) => {
     url
   })
 
-  user.save().then((user) => {
+  user.save().then(async (user) => {
     sendEmail(email)
-    const appSecret = bcrypt.hashSync(user.id, process.env.SALT)
+    const salt = await bcrypt.genSalt(10)
+    const appSecret = bcrypt.hashSync(user.id, salt)
 
     res.status(201).json({ app_secret: appSecret })
   })
