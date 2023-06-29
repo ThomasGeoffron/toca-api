@@ -24,7 +24,9 @@ const register = async (req, res) => {
 
   user.save().then((user) => {
     sendEmail(email)
-    res.status(201).json(user)
+    const appSecret = bcrypt.hashSync(user.id, process.env.SALT)
+
+    res.status(201).json({ app_secret: appSecret })
   })
 }
 
@@ -47,4 +49,21 @@ const login = (req, res) => {
   })
 }
 
-module.exports = { register, login }
+const loginViaSecret = (req, res) => {
+  const appId = req.body.appId
+  const appSecret = req.body.appSecret
+
+  Users.findById(appId).then((user) => {
+    if (user) {
+      bcrypt.compare(user.id, appSecret, function (_, result) {
+        if (result) {
+          const token = generateToken(user)
+          return res.status(200).json({ message: 'Logged in succesfully', token })
+        }
+        res.status(404).json({ message: 'User not found' })
+      })
+    }
+  })
+}
+
+module.exports = { register, login, loginViaSecret }

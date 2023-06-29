@@ -37,6 +37,8 @@ mongoose.connection.once('open', () => {
 
   app.post('/login', authController.login)
 
+  app.post('/login/secret', authController.loginViaSecret)
+
   // Users
 
   const users = require('./controllers/users')
