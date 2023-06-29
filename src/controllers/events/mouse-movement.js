@@ -22,7 +22,8 @@ const create = (req, res) => {
     position: {
       x: req.body.x,
       y: req.body.y
-    }
+    },
+    url: req.body.url
   })
 
   mouseMovement.save().then((mouseMovement) => res.status(201).json(mouseMovement))

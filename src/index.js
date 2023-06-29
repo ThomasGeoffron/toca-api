@@ -116,4 +116,18 @@ mongoose.connection.once('open', () => {
   app.post('/events/user-sessions', auth, userSessions.create)
 
   app.listen(5002, () => console.log('API listening on port 5002'))
+
+  // KPIs
+
+  const kpis = require('./controllers/kpi')
+
+  app.get('/kpis', auth, kpis.findAll)
+
+  app.get('/kpis/:id', auth, kpis.findOne)
+
+  app.post('/kpis', auth, kpis.create)
+
+  app.patch('/kpis/:id', auth, kpis.update)
+
+  app.delete('/kpis/:id', auth, kpis.remove)
 })

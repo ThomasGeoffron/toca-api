@@ -192,6 +192,10 @@ const MouseMovementEvents = new mongoose.model('MouseMovementEvents', new mongoo
       required: true
     }
   },
+  url: {
+    type: String,
+    required: true
+  },
   tags: [
     {
       type: mongoose.Schema.Types.ObjectId,

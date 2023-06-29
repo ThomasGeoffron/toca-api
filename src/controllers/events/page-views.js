@@ -34,7 +34,7 @@ const create = async (req, res) => {
 }
 
 const addView = async (req, res) => {
-  PageViews.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, { $inc: { views: 1 } })
+  PageViews.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, { $inc: { views: 1 } }, { new: true })
     .then((tag) => res.status(201).json(tag))
     .catch(() => res.status(400).json({ message: 'An error occured' }))
 }

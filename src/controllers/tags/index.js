@@ -25,7 +25,7 @@ const create = (req, res) => {
 }
 
 const update = async (req, res) => {
-  Tags.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, { comment: req.body.comment })
+  Tags.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, { comment: req.body.comment }, { new: true })
     .then((tag) => res.status(201).json(tag))
     .catch(() => res.status(400).json({ message: 'An error occured' }))
 }
