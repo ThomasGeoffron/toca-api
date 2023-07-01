@@ -18,18 +18,12 @@ const findOne = async (req, res) => {
 const create = async (req, res) => {
   const pageView = new PageViews({
     userId: new mongoose.mongo.ObjectId(req.user.id),
-    title: req.body.title,
-    url: req.body.url,
-    timestamp: req.body.timestamp
+    title: req.body.data.title,
+    url: req.body.data.url,
+    timestamp: req.body.data.timestamp
   })
 
   pageView.save().then((pageView) => res.status(201).json(pageView))
 }
 
-const addView = async (req, res) => {
-  PageViews.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, { $inc: { views: 1 } }, { new: true })
-    .then((tag) => res.status(201).json(tag))
-    .catch(() => res.status(400).json({ message: 'An error occured' }))
-}
-
-module.exports = { findAll, findOne, create, addView }
+module.exports = { findAll, findOne, create }

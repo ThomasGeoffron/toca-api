@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { TrackingEvents, Tags } = require('../../models')
+const { TrackingEvents } = require('../../models')
 
 const findAll = async (req, res) => {
   const trackings = await TrackingEvents.find({ userId: req.user.id })
@@ -16,18 +16,15 @@ const findOne = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  if (!['click', 'hover', 'submit', 'change', 'focus', 'blur'].includes(req.body.eventType)) {
+  if (!['click', 'hover', 'submit', 'change', 'focus', 'blur'].includes(req.body.data.eventType)) {
     return res.status(400).json({ message: 'EventType isn\'t compliant to available event types' })
   }
 
-  const tags = await Tags.find({ _id: { $in: req.body.tags }, userId: req.user.id })
-
   const tracking = new TrackingEvents({
     userId: new mongoose.mongo.ObjectId(req.user.id),
-    name: req.body.name,
-    eventType: req.body.eventType,
-    timestamp: req.body.timestamp,
-    tags: tags.map((tag) => tag.id)
+    name: req.body.data.name,
+    eventType: req.body.data.eventType,
+    timestamp: req.body.data.timestamp
   })
 
   tracking.save().then((tracking) => res.status(201).json(tracking))

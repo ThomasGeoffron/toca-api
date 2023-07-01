@@ -18,12 +18,12 @@ const findOne = async (req, res) => {
 const create = (req, res) => {
   const mouseMovement = new MouseMovementEvents({
     userId: new mongoose.mongo.ObjectId(req.user.id),
-    timestamp: req.body.timestamp,
+    timestamp: req.body.data.timestamp,
     position: {
-      x: req.body.x,
-      y: req.body.y
+      x: req.body.data.x,
+      y: req.body.data.y
     },
-    url: req.body.url
+    url: req.body.data.url
   })
 
   mouseMovement.save().then((mouseMovement) => res.status(201).json(mouseMovement))

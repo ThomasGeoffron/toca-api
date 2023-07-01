@@ -2,8 +2,8 @@ const { Users } = require('../models')
 const bcrypt = require('bcryptjs')
 
 const secret = async (req, res, next) => {
-  const appId = req.headers['x-app-id']
-  const appSecret = req.headers['x-app-secret']
+  const appId = req.body.credentials.appId
+  const appSecret = req.body.credentials.appSecret
 
   if (!appId || !appSecret) {
     return res
@@ -21,6 +21,7 @@ const secret = async (req, res, next) => {
 
   bcrypt.compare(appId, appSecret, function (_, result) {
     if (result) {
+      req.user = user
       return next()
     }
     return res.status(404).json({ message: 'User not found' })

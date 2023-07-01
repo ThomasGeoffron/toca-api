@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { UserSessionsEvents, Tags } = require('../../models')
+const { UserSessionsEvents } = require('../../models')
 
 const findAll = async (req, res) => {
   const userSessions = await UserSessionsEvents.find({ userId: req.user.id })
@@ -16,13 +16,10 @@ const findOne = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  const tags = await Tags.find({ _id: { $in: req.body.tags }, userId: req.user.id })
-
   const userSession = new UserSessionsEvents({
     userId: new mongoose.mongo.ObjectId(req.user.id),
-    startsAt: req.body.startsAt,
-    endedAt: req.body.endedAt,
-    tags: tags.map((tag) => tag.id)
+    startsAt: req.body.data.startsAt,
+    endedAt: req.body.data.endedAt
   })
 
   userSession.save().then((userSession) => res.status(201).json(userSession))

@@ -70,8 +70,6 @@ mongoose.connection.once('open', () => {
 
   app.post('/events/page-views', secret, pageViews.create)
 
-  app.patch('/events/page-views/:id', secret, pageViews.addView)
-
   // Tracking
 
   const tracking = require('./controllers/events/tracking')
