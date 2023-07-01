@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { PageViews, Tags } = require('../../models')
+const { PageViews } = require('../../models')
 
 const findAll = async (req, res) => {
   const pageViews = await PageViews.find({ userId: req.user.id })
@@ -16,18 +16,11 @@ const findOne = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  const exists = await PageViews.findOne({ url: req.body.url, userId: req.user.id })
-
-  if (exists) return res.status(400).json({ message: 'PageView already exists' })
-
-  const tags = await Tags.find({ _id: { $in: req.body.tags }, userId: req.user.id })
-
   const pageView = new PageViews({
     userId: new mongoose.mongo.ObjectId(req.user.id),
     title: req.body.title,
     url: req.body.url,
-    views: 1,
-    tags: tags.map((tag) => tag.id)
+    timestamp: req.body.timestamp
   })
 
   pageView.save().then((pageView) => res.status(201).json(pageView))

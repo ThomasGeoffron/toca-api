@@ -24,7 +24,7 @@ mongoose.connect(process.env.MONGO_URL, {
 
 mongoose.connection.once('open', () => {
   // eslint-disable-next-line no-unused-vars
-  const { Users, Tags, Tunnels, Filters, Kpi, UsersSessions, PageViews, TrackingEvents, MouseMovementEvents } = require('./models')
+  const { Users, UsersSessions, PageViews, TrackingEvents, MouseMovementEvents } = require('./models')
 
   const auth = require('./middleware/auth')
   const admin = require('./middleware/admin')
@@ -47,30 +47,6 @@ mongoose.connection.once('open', () => {
   app.get('/users/:id', admin, users.findOne)
 
   app.patch('/users/:id', admin, users.activate)
-
-  // Tags
-
-  const tags = require('./controllers/tags')
-
-  app.get('/tags', auth, tags.findAll)
-
-  app.get('/tags/:id', auth, tags.findOne)
-
-  app.post('/tags', auth, tags.create)
-
-  app.patch('/tags/:id', auth, tags.update)
-
-  // Tunnels
-
-  const tunnels = require('./controllers/tunnels')
-
-  app.get('/tunnels', auth, tunnels.findAll)
-
-  app.get('/tunnels/:id', auth, tunnels.findOne)
-
-  app.post('/tunnels', auth, tunnels.create)
-
-  app.patch('/tunnels/:id', auth, tunnels.update)
 
   // Events
 
@@ -115,20 +91,6 @@ mongoose.connection.once('open', () => {
   app.get('/events/user-sessions/:id', auth, userSessions.findOne)
 
   app.post('/events/user-sessions', secret, userSessions.create)
-
-  // KPIs
-
-  const kpis = require('./controllers/kpi')
-
-  app.get('/kpis', auth, kpis.findAll)
-
-  app.get('/kpis/:id', auth, kpis.findOne)
-
-  app.post('/kpis', auth, kpis.create)
-
-  app.patch('/kpis/:id', auth, kpis.update)
-
-  app.delete('/kpis/:id', auth, kpis.remove)
 
   app.listen(5002, () => console.log('API listening on port 5002'))
 })

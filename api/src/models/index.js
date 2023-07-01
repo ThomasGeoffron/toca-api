@@ -34,73 +34,6 @@ const Users = new mongoose.model('Users', new mongoose.Schema({
   }
 }))
 
-const Tags = new mongoose.model('Tags', new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
-  },
-  comment: {
-    type: String,
-    required: true
-  }
-}))
-
-const Tunnels = new mongoose.model('Tunnel', new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
-  },
-  comment: {
-    type: String,
-    required: true
-  },
-  tags: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Tags'
-    }
-  ]
-}))
-
-const Filters = new mongoose.model('Filters', new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  }
-}))
-
-const Kpi = new mongoose.model('Kpi', new mongoose.Schema({
-  filters: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Filters',
-      required: true
-    }
-  ],
-  startsAt: {
-    type: Date,
-    required: false
-  },
-  endedAt: {
-    type: Date,
-    required: false
-  },
-  step: {
-    type: Number,
-    required: false
-  },
-  dataType: {
-    type: String,
-    enum: ['number', 'rate'],
-    required: true
-  },
-  visualType: {
-    type: String,
-    enum: ['KPI', 'Graph', 'Heatmap'],
-    required: true
-  }
-}))
-
 const UsersSessions = new mongoose.model('UsersSessions', new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -113,13 +46,7 @@ const UsersSessions = new mongoose.model('UsersSessions', new mongoose.Schema({
   endedAt: {
     type: Date,
     required: true
-  },
-  tags: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true
-    }
-  ]
+  }
 }))
 
 const PageViews = new mongoose.model('PageViews', new mongoose.Schema({
@@ -135,16 +62,10 @@ const PageViews = new mongoose.model('PageViews', new mongoose.Schema({
     type: String,
     required: true
   },
-  views: {
-    type: Number,
+  timestamp: {
+    type: Date,
     required: true
-  },
-  tags: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true
-    }
-  ]
+  }
 }))
 
 const TrackingEvents = new mongoose.model('TrackingEvents', new mongoose.Schema({
@@ -164,13 +85,7 @@ const TrackingEvents = new mongoose.model('TrackingEvents', new mongoose.Schema(
   timestamp: {
     type: Date,
     required: true
-  },
-  tags: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true
-    }
-  ]
+  }
 }))
 
 const MouseMovementEvents = new mongoose.model('MouseMovementEvents', new mongoose.Schema({
@@ -195,13 +110,7 @@ const MouseMovementEvents = new mongoose.model('MouseMovementEvents', new mongoo
   url: {
     type: String,
     required: true
-  },
-  tags: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true
-    }
-  ]
+  }
 }))
 
-module.exports = { Users, Tags, Tunnels, Filters, Kpi, UsersSessions, PageViews, TrackingEvents, MouseMovementEvents }
+module.exports = { Users, UsersSessions, PageViews, TrackingEvents, MouseMovementEvents }
