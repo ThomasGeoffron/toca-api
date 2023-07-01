@@ -50,21 +50,4 @@ const login = (req, res) => {
   })
 }
 
-const loginViaSecret = (req, res) => {
-  const appId = req.body.appId
-  const appSecret = req.body.appSecret
-
-  Users.findById(appId).then((user) => {
-    if (user) {
-      bcrypt.compare(user.id, appSecret, function (_, result) {
-        if (result) {
-          const token = generateToken(user)
-          return res.status(200).json({ message: 'Logged in succesfully', token })
-        }
-        res.status(404).json({ message: 'User not found' })
-      })
-    }
-  })
-}
-
-module.exports = { register, login, loginViaSecret }
+module.exports = { register, login }

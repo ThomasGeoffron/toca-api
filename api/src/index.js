@@ -28,6 +28,7 @@ mongoose.connection.once('open', () => {
 
   const auth = require('./middleware/auth')
   const admin = require('./middleware/admin')
+  const secret = require('./middleware/secret')
 
   // Auth
 
@@ -36,8 +37,6 @@ mongoose.connection.once('open', () => {
   app.post('/register', authController.register)
 
   app.post('/login', authController.login)
-
-  app.post('/login/secret', authController.loginViaSecret)
 
   // Users
 
@@ -83,7 +82,7 @@ mongoose.connection.once('open', () => {
 
   app.get('/events/mouse-movements/:id', auth, mouseMovements.findOne)
 
-  app.post('/events/mouse-movements', auth, mouseMovements.create)
+  app.post('/events/mouse-movements', secret, mouseMovements.create)
 
   // PageViews
 
@@ -93,9 +92,9 @@ mongoose.connection.once('open', () => {
 
   app.get('/events/page-views/:id', auth, pageViews.findOne)
 
-  app.post('/events/page-views', auth, pageViews.create)
+  app.post('/events/page-views', secret, pageViews.create)
 
-  app.patch('/events/page-views/:id', auth, pageViews.addView)
+  app.patch('/events/page-views/:id', secret, pageViews.addView)
 
   // Tracking
 
@@ -105,7 +104,7 @@ mongoose.connection.once('open', () => {
 
   app.get('/events/tracking/:id', auth, tracking.findOne)
 
-  app.post('/events/tracking', auth, tracking.create)
+  app.post('/events/tracking', secret, tracking.create)
 
   // UserSessions
 
@@ -115,9 +114,7 @@ mongoose.connection.once('open', () => {
 
   app.get('/events/user-sessions/:id', auth, userSessions.findOne)
 
-  app.post('/events/user-sessions', auth, userSessions.create)
-
-  app.listen(5002, () => console.log('API listening on port 5002'))
+  app.post('/events/user-sessions', secret, userSessions.create)
 
   // KPIs
 
@@ -132,4 +129,6 @@ mongoose.connection.once('open', () => {
   app.patch('/kpis/:id', auth, kpis.update)
 
   app.delete('/kpis/:id', auth, kpis.remove)
+
+  app.listen(5002, () => console.log('API listening on port 5002'))
 })
