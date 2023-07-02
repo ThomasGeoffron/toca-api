@@ -2,13 +2,13 @@ const mongoose = require('mongoose')
 const { UserSessionsEvents } = require('../../models')
 
 const findAll = async (req, res) => {
-  const userSessions = await UserSessionsEvents.find({ userId: req.user.id })
+  const userSessions = await UserSessionsEvents.find({ appId: req.user._id })
 
   res.status(200).json(userSessions)
 }
 
 const findOne = async (req, res) => {
-  const userSession = await UserSessionsEvents.findOne({ _id: req.params.id, userId: req.user.id })
+  const userSession = await UserSessionsEvents.findOne({ _id: req.params.id, appId: req.user._id })
 
   if (!userSession) return res.status(404).json({ message: 'MouseMovement not found' })
 
@@ -17,7 +17,7 @@ const findOne = async (req, res) => {
 
 const create = async (req, res) => {
   const userSession = new UserSessionsEvents({
-    userId: new mongoose.mongo.ObjectId(req.user.id),
+    appId: new mongoose.mongo.ObjectId(req.user._id),
     startsAt: req.body.data.startsAt,
     endedAt: req.body.data.endedAt
   })

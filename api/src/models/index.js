@@ -14,6 +14,10 @@ const Users = new mongoose.model('Users', new mongoose.Schema({
     type: String,
     required: true
   },
+  appSecret: {
+    type: String,
+    required: true
+  },
   password: {
     type: String,
     required: true
@@ -35,7 +39,7 @@ const Users = new mongoose.model('Users', new mongoose.Schema({
 }))
 
 const UsersSessions = new mongoose.model('UsersSessions', new mongoose.Schema({
-  userId: {
+  appId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
   },
@@ -50,7 +54,7 @@ const UsersSessions = new mongoose.model('UsersSessions', new mongoose.Schema({
 }))
 
 const PageViews = new mongoose.model('PageViews', new mongoose.Schema({
-  userId: {
+  appId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
   },
@@ -69,7 +73,7 @@ const PageViews = new mongoose.model('PageViews', new mongoose.Schema({
 }))
 
 const TrackingEvents = new mongoose.model('TrackingEvents', new mongoose.Schema({
-  userId: {
+  appId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
   },
@@ -89,7 +93,7 @@ const TrackingEvents = new mongoose.model('TrackingEvents', new mongoose.Schema(
 }))
 
 const MouseMovementEvents = new mongoose.model('MouseMovementEvents', new mongoose.Schema({
-  userId: {
+  appId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
   },

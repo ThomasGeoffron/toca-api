@@ -14,20 +14,19 @@ const register = async (req, res) => {
 
   if (exists) return res.status(400).json({ message: 'Account already exists' })
 
+  const appSecret = bcrypt.hashSync(email, 10)
   const user = new Users({
     company,
     kbis,
     email,
     password,
+    appSecret,
     url
   })
 
-  user.save().then(async (user) => {
+  user.save().then(async () => {
     sendEmail(email)
-    const salt = await bcrypt.genSalt(10)
-    const appSecret = bcrypt.hashSync(user.id, salt)
-
-    res.status(201).json({ app_secret: appSecret })
+    res.status(201).json({ appSecret })
   })
 }
 

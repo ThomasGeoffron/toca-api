@@ -1,31 +1,27 @@
 const { Users } = require('../models')
-const bcrypt = require('bcryptjs')
 
 const secret = async (req, res, next) => {
+  console.log(req.body)
+
   const appId = req.body.credentials.appId
   const appSecret = req.body.credentials.appSecret
 
   if (!appId || !appSecret) {
     return res
       .status(401)
-      .send("Missing app informations, couldn't authenticate")
+      .send('Missing app informations, could not authenticate')
   }
 
-  const user = await Users.findOne({ appId, active: true })
+  const user = await Users.findOne({ _id: appId, appSecret, active: true })
 
   if (!user) {
     return res
       .status(401)
-      .send("Invalid appId, couldn't authenticate")
+      .send('Invalid credentials, could not authenticate')
   }
 
-  bcrypt.compare(appId, appSecret, function (_, result) {
-    if (result) {
-      req.user = user
-      return next()
-    }
-    return res.status(404).json({ message: 'User not found' })
-  })
+  req.user = user
+  next()
 }
 
 module.exports = secret
