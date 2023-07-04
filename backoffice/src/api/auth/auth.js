@@ -14,3 +14,7 @@ export function loginViaSecret(appId, appSecret) {
   const data = { appId, appSecret };
   return _post("/loginViaSecret", data);
 }
+
+export function getCurrentUser() {
+  return _get(`/me`);
+}
