@@ -14,7 +14,7 @@
     "chart.js": "^4.3.0",
     "flowbite": "^1.6.6",
     "flowbite-react": "^0.4.9",
-    "heatmapjs": "^2.0.2",
+    "heatmap.js": "https://github.com/ionata/heatmap.js.git",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",

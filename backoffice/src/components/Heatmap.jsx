@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 
-import { findAll as findAllMouseMouvement } from "../api/events/mouse-mouvements";
+import Heatmap from 'heatmap.js';
+import { findAll as findAllMouseMouvement } from '../api/events/mouse-mouvements';
 
-import h337 from "heatmapjs/heatmap.js";
-
-export const Heatmap = () => {
-  const [_config, setConfig] = useState(null);
-  const [_isLoaded, setLoaded] = useState(false);
+export default function HeatmapChart() {
   const [_mouseMouvementEvent, setMouseMouvementEvent] = useState({});
-
-  const divRef = React.useRef(null);
+  const divRef = useRef(null);
 
   useEffect(() => {
     findAllMouseMouvement().then(({ data }) => {
@@ -21,7 +17,7 @@ export const Heatmap = () => {
         }))
         .reduce((acc, pos) => {
           const existingPairIndex = acc.findIndex(
-            ({ x, y }) => x === pos.x && y === pos.y
+            ({ x, y }) => x === pos.x && y === pos.y,
           );
 
           if (existingPairIndex === -1) {
@@ -40,43 +36,20 @@ export const Heatmap = () => {
           .value,
         data: positions,
       };
-      setMouseMouvementEvent(dataPoints);
+
+      const heatmapInstance = Heatmap.create({
+        container: divRef.current,
+        backgroundColor: 'white',
+        radius: 20,
+        maxOpacity: 1,
+        minOpacity: 0,
+        blur: 0.75,
+      });
+      heatmapInstance.setData(dataPoints);
     });
   }, []);
 
-  useEffect(() => {
-    console.log(document.querySelector(".heatmapContainer"));
-    if (!divRef.current) return;
-    setConfig({
-      container: document.querySelector(".heatmapContainer"),
-      backgroundColor: "black",
-      radius: 10,
-      maxOpacity: 1,
-      minOpacity: 0,
-      blur: 0.75,
-    });
-  }, [divRef]);
-
-  useEffect(() => {
-    console.log(_mouseMouvementEvent);
-
-    if (!_isLoaded && _mouseMouvementEvent.data) {
-      const heatmapInstance = h337.create({
-        container: document.querySelector(".heatmapContainer"),
-      });
-      heatmapInstance.setData(_mouseMouvementEvent);
-      heatmapInstance.repaint();
-      setLoaded(true);
-    }
-  }, [_mouseMouvementEvent]);
-
   return (
-    <div>
-      <div
-        className="heatmapContainer"
-        style={{ width: 300, height: 300 }}
-        ref={divRef}
-      ></div>
-    </div>
+    <div ref={divRef} style={{ width: 300, height: 600 }} />
   );
-};
+}
