@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getCurrentUser } from '../api/auth/auth';
-
-import Heatmap from '../components/Heatmap';
-import { TrackingEvents } from '../components/TrackingEvents';
+import { Label, TextInput } from 'flowbite-react';
 
 function Home() {
   const [_user, setUser] = useState({});
@@ -19,13 +17,31 @@ function Home() {
 
   return (
     <>
-      <h1> Welcome Home ! {_user.company} </h1>
-      <div>
-        <p> Your appId : {_user.id} </p>
-        <p> Your appSecret : {_user.appSecret} </p>
+      <h1> Bienvenue ! {_user.company} </h1>
+      <div className="flex grid grid-cols-2 gap-4">
+        <div className="flex flex-col ">
+          <Label htmlFor="userId" className="text-sm font-medium text-gray-700">
+            AppId:
+          </Label>
+          <TextInput
+            id="userId"
+            disabled
+            className=" py-2 px-4 border border-green-300 rounded-md bg-green-100 text-green-800 disabled:opacity-20 "
+            value={_user.id}
+          />
+        </div>
+        <div className="flex flex-col">
+          <Label htmlFor="userId" className="text-sm font-medium text-gray-700">
+            AppSecret:
+          </Label>
+          <TextInput
+            id="userId"
+            disabled
+            className="py-2 px-4 border border-cyan-300 rounded-md bg-cyan-100 text-cyan-800 disabled:opacity-20 "
+            value={_user.appSecret}
+          />
+        </div>
       </div>
-      <Heatmap />
-      <TrackingEvents />
     </>
   );
 }
