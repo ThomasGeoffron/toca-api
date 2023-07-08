@@ -1,7 +1,10 @@
-import React from "react";
-import { HiInbox, HiViewBoards } from "react-icons/hi";
-import { Sidebar as FlowbiteSidebar } from "flowbite-react";
-import { LuMousePointerClick, LuMap, LuHome, LuView } from "react-icons/lu";
+import React from 'react';
+import { HiInbox } from 'react-icons/hi';
+import { Sidebar as FlowbiteSidebar } from 'flowbite-react';
+import {
+  LuMousePointerClick, LuMap, LuHome, LuView,
+} from 'react-icons/lu';
+import { Link } from 'react-router-dom';
 
 const { Items, ItemGroup, Item } = FlowbiteSidebar;
 
@@ -10,30 +13,24 @@ export default function Sidebar() {
     <FlowbiteSidebar className="mr-5 shadow-lg rounded-lg list-none list-inside w-full md:w-64 md:collapse-open">
       <Items>
         <ItemGroup>
-          <Item href="/" icon={LuHome}>
-            <p>Home</p>
+          <Item as={Link} to="/" icon={LuHome}>
+            Accueil
           </Item>
           <Item
-            href="/events/tracking"
+            as={Link}
+            to="/tracking"
             icon={LuMousePointerClick}
-            labelColor="dark"
           >
-            <p>Tracking Events</p>
+            Tracking
           </Item>
-          <Item href="/events/heatmap" icon={LuMap}>
-            <p>HeatMap</p>
+          <Item as={Link} to="/views" icon={LuView}>
+            Page Views
           </Item>
-          <Item href="#" icon={LuView}>
-            <p>PageView</p>
+          <Item as={Link} to="/sessions" icon={HiInbox}>
+            Sessions
           </Item>
-          <Item href="#" icon={HiInbox}>
-            <p>UserSession</p>
-          </Item>
-          <Item href="#" icon={HiInbox}>
-            <p>Mes tunnels</p>
-          </Item>
-          <Item href="#" icon={HiInbox}>
-            <p>Mes tags</p>
+          <Item as={Link} to="/heatmap" icon={LuMap}>
+            Heat Maps
           </Item>
         </ItemGroup>
       </Items>

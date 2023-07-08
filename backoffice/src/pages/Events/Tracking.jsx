@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -7,34 +7,35 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
-import { findAll as findAllTrackEvent } from "@api/events/tracking";
-import { Label, Select } from "flowbite-react";
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import { Label, Select } from 'flowbite-react';
+import { findAll as findAllTrackEvent } from '../../api/events/tracking';
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 export default function TrackingEvents() {
   const [_trackEvents, setTrackEvents] = useState([]);
   const [_tabEvent, setTabEvent] = useState([0, 0, 0, 0, 0]);
-  const [_buttonSelected, setButtonSelected] = useState("");
-  const [_labelChartButton, setLabelChartButton] = useState("");
+  const [_buttonSelected, setButtonSelected] = useState('');
+  const [_labelChartButton, setLabelChartButton] = useState('');
 
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
+        position: 'top',
       },
       title: {
         display: true,
-        text: "",
+        text: '',
       },
     },
   };
@@ -48,33 +49,29 @@ export default function TrackingEvents() {
 
   const dataChartButton = () => {
     const eventsTypes = Array.from(
-      new Set(_trackEvents.map((e) => e.eventType))
+      new Set(_trackEvents.map((e) => e.eventType)),
     ).sort((a, b) => (a < b ? -1 : 1));
-    if (_buttonSelected === "") {
-      const columns = _trackEvents.reduce(
-        (cols, event) => {
-          cols[
-            eventsTypes.findIndex((eventType) => eventType === event.eventType)
-          ] += 1;
-          return cols;
-        },
-        [0, 0, 0, 0, 0, 0]
-      );
-      setLabelChartButton("Evenement sur tous le site");
+    if (_buttonSelected === '') {
+      const columns = [0, 0, 0, 0, 0, 0];
+      _trackEvents.forEach((event) => {
+        const index = eventsTypes.findIndex((eventType) => eventType === event.eventType);
+        if (index !== -1) {
+          columns[index] += 1;
+        }
+      });
+
+      setLabelChartButton('Evenement sur tous le site');
       setTabEvent(columns);
     } else {
-      const columns = _trackEvents.reduce(
-        (cols, event) => {
-          cols[
-            eventsTypes.findIndex(
-              (eventType) =>
-                eventType === event.eventType && event.name === _buttonSelected
-            )
-          ] += 1;
-          return cols;
-        },
-        [0, 0, 0, 0, 0, 0]
-      );
+      const columns = [0, 0, 0, 0, 0, 0];
+      _trackEvents.forEach((event) => {
+        const index = eventsTypes.findIndex(
+          (eventType) => eventType === event.eventType && event.name === _buttonSelected,
+        );
+        if (index !== -1) {
+          columns[index] += 1;
+        }
+      });
 
       setLabelChartButton(`Evenement sur le bouton ${_buttonSelected}`);
       setTabEvent(columns);
@@ -90,7 +87,7 @@ export default function TrackingEvents() {
   };
 
   const labels = Array.from(new Set(_trackEvents.map((e) => e.eventType))).sort(
-    (a, b) => (a < b ? -1 : 1)
+    (a, b) => (a < b ? -1 : 1),
   );
   const data = {
     labels,
@@ -98,23 +95,22 @@ export default function TrackingEvents() {
       {
         label: _labelChartButton,
         data: _tabEvent,
-        backgroundColor: "#EE6055",
+        backgroundColor: '#EE6055',
       },
     ],
   };
 
   return (
-    <React.Fragment>
+    <>
       <Label
         htmlFor="button"
-        value="Choississez un bouton pour voir les statistiques"
+        value="Choississez un élément pour voir ces métriques"
       />
       <Select
-        id="button"
         className="w-1/4  m-auto mt-4"
         onChange={(e) => handleEditChart(e.target.value)}
       >
-        <option value="">Tous les boutons</option>
+        <option value="">Tous les éléments</option>
         {Array.from(new Set(_trackEvents.map((e) => e.name))).map((button) => (
           <option value={button} key={button}>
             {button}
@@ -124,6 +120,6 @@ export default function TrackingEvents() {
       <div>
         <Bar data={data} options={options} />
       </div>
-    </React.Fragment>
+    </>
   );
 }

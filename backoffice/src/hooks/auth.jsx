@@ -6,13 +6,16 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { login } from '@api/auth/auth';
+import { login } from '../api/auth/auth';
 
 const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }) {
+  const navigate = useNavigate();
+
   const [_user, setUser] = useState({});
   const [_token, setToken] = useState(sessionStorage.getItem('toca-token'));
 
@@ -24,20 +27,19 @@ export function AuthProvider({ children }) {
     return new Promise((_, reject) => {
       login(email, password)
         .then(({ data: user }) => {
-          console.log(user);
           setToken(user.token);
-          location.href = '/';
+          setUser(user);
+          navigate('/');
         })
         .catch((error) => {
-          console.log(error);
-          reject(error.response.data);
+          reject(error?.response?.data?.message || 'Une erreur est survenue');
         });
     });
   }
 
   const handleLogout = useCallback(() => {
-    setToken(null);
-    location.href = '/login';
+    setToken('');
+    window.location.href = '/login';
   });
 
   const value = useMemo(

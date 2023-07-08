@@ -1,108 +1,108 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const errorHandler = require("./helpers/error-handler");
+const express = require('express')
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+const cors = require('cors')
+const errorHandler = require('./helpers/error-handler')
 
 // eslint-disable-next-line no-unused-vars
-const env = require("dotenv").config();
+const env = require('dotenv').config()
 
-const app = express();
+const app = express()
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    credentials: true,
+    origin: 'http://localhost:3000',
+    credentials: true
   })
-);
-app.use(errorHandler);
+)
+app.use(errorHandler)
 
 mongoose
   .connect(process.env.MONGO_URL, {
     useUnifiedTopology: true,
-    useNewUrlParser: true,
+    useNewUrlParser: true
   })
-  .then(() => console.log("Connected succesfully !"))
-  .catch((error) => console.error(error));
+  .then(() => console.log('Connected succesfully !'))
+  .catch((error) => console.error(error))
 
-mongoose.connection.once("open", () => {
+mongoose.connection.once('open', () => {
   // eslint-disable-next-line no-unused-vars
   const {
     Users,
     UsersSessions,
     PageViews,
     TrackingEvents,
-    MouseMovementEvents,
-  } = require("./models");
+    MouseMovementEvents
+  } = require('./models')
 
-  const auth = require("./middleware/auth");
-  const admin = require("./middleware/admin");
-  const secret = require("./middleware/secret");
+  const auth = require('./middleware/auth')
+  const admin = require('./middleware/admin')
+  const secret = require('./middleware/secret')
 
   // Auth
 
-  const authController = require("./controllers/auth");
+  const authController = require('./controllers/auth')
 
-  app.post("/register", authController.register);
+  app.post('/register', authController.register)
 
-  app.post("/login", authController.login);
+  app.post('/login', authController.login)
 
   // Users
 
-  const users = require("./controllers/users");
+  const users = require('./controllers/users')
 
-  app.get("/me", auth, users.me);
+  app.get('/me', auth, users.me)
 
-  app.get("/users", admin, users.findAll);
+  app.get('/users', admin, users.findAll)
 
-  app.get("/users/:id", admin, users.findOne);
+  app.get('/users/:id', admin, users.findOne)
 
-  app.patch("/users/:id", admin, users.activate);
+  app.patch('/users/:id', admin, users.activate)
 
   // Events
 
   // MouseMovements
 
-  const mouseMovements = require("./controllers/events/mouse-movement");
+  const mouseMovements = require('./controllers/events/mouse-movement')
 
-  app.get("/events/mouse-movements", auth, mouseMovements.findAll);
+  app.get('/events/mouse-movements', auth, mouseMovements.findAll)
 
-  app.get("/events/mouse-movements/:id", auth, mouseMovements.findOne);
+  app.get('/events/mouse-movements/:id', auth, mouseMovements.findOne)
 
-  app.post("/events/mouse-movements", secret, mouseMovements.create);
+  app.post('/events/mouse-movements', secret, mouseMovements.create)
 
   // PageViews
 
-  const pageViews = require("./controllers/events/page-views");
+  const pageViews = require('./controllers/events/page-views')
 
-  app.get("/events/page-views", auth, pageViews.findAll);
+  app.get('/events/page-views', auth, pageViews.findAll)
 
-  app.get("/events/page-views/:id", auth, pageViews.findOne);
+  app.get('/events/page-views/:id', auth, pageViews.findOne)
 
-  app.post("/events/page-views", secret, pageViews.create);
+  app.post('/events/page-views', secret, pageViews.create)
 
   // Tracking
 
-  const tracking = require("./controllers/events/tracking");
+  const tracking = require('./controllers/events/tracking')
 
-  app.get("/events/tracking", auth, tracking.findAll);
+  app.get('/events/tracking', auth, tracking.findAll)
 
-  app.get("/events/tracking/:id", auth, tracking.findOne);
+  app.get('/events/tracking/:id', auth, tracking.findOne)
 
-  app.post("/events/tracking", secret, tracking.create);
+  app.post('/events/tracking', secret, tracking.create)
 
   // UserSessions
 
-  const userSessions = require("./controllers/events/user-sessions");
+  const userSessions = require('./controllers/events/user-sessions')
 
-  app.get("/events/user-sessions", auth, userSessions.findAll);
+  app.get('/events/user-sessions', auth, userSessions.findAll)
 
-  app.get("/events/user-sessions/:id", auth, userSessions.findOne);
+  app.get('/events/user-sessions/:id', auth, userSessions.findOne)
 
-  app.post("/events/user-sessions", secret, userSessions.create);
+  app.post('/events/user-sessions', secret, userSessions.create)
 
-  app.listen(5002, () => console.log("API listening on port 5002"));
-});
+  app.listen(5002, () => console.log('API listening on port 5002'))
+})

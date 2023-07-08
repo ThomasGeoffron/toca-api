@@ -1,18 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 
-import Heatmap from "heatmap.js";
-import { findAll as findAllMouseMouvement } from "@api/events/mouse-mouvements";
-import { Label, Select } from "flowbite-react";
+import Heatmap from 'heatmap.js';
+import { Label, Select } from 'flowbite-react';
+import { findAll as findAllMouseMouvement } from '../../api/events/mouse-mouvements';
 
 export default function HeatmapChart() {
   const [_mouseMouvementEvent, setMouseMouvementEvent] = useState([]);
-  const [_buttonSelected, setButtonSelected] = useState("");
+  const [_buttonSelected, setButtonSelected] = useState('');
   const divRef = useRef(null);
 
   useEffect(() => {
     findAllMouseMouvement().then(({ data }) => {
       setMouseMouvementEvent(data);
-      if (_buttonSelected != "") {
+      if (_buttonSelected !== '') {
         const positions = data
           .filter((event) => event.url === _buttonSelected)
           .map((movement) => ({
@@ -22,7 +22,7 @@ export default function HeatmapChart() {
           }))
           .reduce((acc, pos) => {
             const existingPairIndex = acc.findIndex(
-              ({ x, y }) => x === pos.x && y === pos.y
+              ({ x, y }) => x === pos.x && y === pos.y,
             );
 
             if (existingPairIndex === -1) {
@@ -44,7 +44,7 @@ export default function HeatmapChart() {
 
         const heatmapInstance = Heatmap.create({
           container: divRef.current,
-          backgroundColor: "black",
+          backgroundColor: 'black',
           radius: 20,
           maxOpacity: 1,
           minOpacity: 0.06,
@@ -66,7 +66,7 @@ export default function HeatmapChart() {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Label
         htmlFor="button"
         value="Choississez une url pour voir les heatmaps"
@@ -78,7 +78,7 @@ export default function HeatmapChart() {
       >
         <option value="">Select a button</option>
         {Array.from(
-          new Set(_mouseMouvementEvent.map((event) => event.url))
+          new Set(_mouseMouvementEvent.map((event) => event.url)),
         ).map((button) => (
           <option value={button} key={button}>
             {button}
@@ -87,15 +87,15 @@ export default function HeatmapChart() {
       </Select>
 
       <div className="">
-        {_buttonSelected != "" ? (
+        {_buttonSelected != '' ? (
           <div
             ref={divRef}
-            style={{ position: "relative", width: "100%", height: 600 }}
+            style={{ position: 'relative', width: '100%', height: 600 }}
           />
         ) : (
-          <div className="text-center"></div>
+          <div className="text-center" />
         )}
       </div>
-    </React.Fragment>
+    </>
   );
 }

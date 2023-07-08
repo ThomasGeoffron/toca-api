@@ -1,7 +1,7 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
-import Sidebar from "@components/nav/sidebar";
-import { useAuth } from "@hooks/auth";
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import Sidebar from './nav/Sidebar';
+import { useAuth } from '../hooks/auth';
 
 export default function ProtectedRoute({ el: Element, requireAdmin }) {
   const { user, token } = useAuth();
@@ -13,15 +13,13 @@ export default function ProtectedRoute({ el: Element, requireAdmin }) {
   }
 
   return (
-    <>
-      <div className="flex flex-col ">
-        <div className="flex">
-          <Sidebar />
-          <div className="w-full item-center">
-            <Element />
-          </div>
+    <div className="flex flex-col ">
+      <div className="flex">
+        <Sidebar />
+        <div className="w-full item-center">
+          <Element />
         </div>
       </div>
-    </>
+    </div>
   );
 }
