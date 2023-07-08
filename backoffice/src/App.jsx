@@ -5,13 +5,13 @@ import { Spinner } from "flowbite-react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import ProtectedRoute from "@components/ProtectedRoutes";
 
-
 const Login = React.lazy(() => import("@pages/Login"));
 const Register = React.lazy(() => import("@pages/Register"));
 const Home = React.lazy(() => import("@pages/Home"));
 
 const Tracking = React.lazy(() => import("@pages/Events/Tracking"));
 const Heatmap = React.lazy(() => import("@pages/Events/Heatmap"));
+const PageView = React.lazy(() => import("@pages/Events/PageView"));
 function App() {
   // sessionStorage.clear();
 
@@ -30,9 +30,18 @@ function App() {
 
               <Route path="/">
                 <Route index element={<ProtectedRoute el={Home} />} />
-                <Route path="events/tracking" element={<ProtectedRoute el={Tracking} />} />
-                <Route path="events/heatmap" element={<ProtectedRoute el={Heatmap} />} />
-
+                <Route
+                  path="events/tracking"
+                  element={<ProtectedRoute el={Tracking} />}
+                />
+                <Route
+                  path="events/heatmap"
+                  element={<ProtectedRoute el={Heatmap} />}
+                />
+                <Route
+                  path="events/page-views"
+                  element={<ProtectedRoute el={PageView} />}
+                />
               </Route>
             </Routes>
           </Router>
