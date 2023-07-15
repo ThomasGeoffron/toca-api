@@ -42,7 +42,6 @@ export default function TrackingEvents() {
 
   useEffect(() => {
     findAllTrackEvent().then((trackEvents) => {
-      console.log(trackEvents);
       setTrackEvents(trackEvents.data);
     });
   }, []);

@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { login } from '../api/auth/auth';
+import { getCurrentUser, login } from '../api/auth/auth';
 
 const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);
@@ -17,18 +17,22 @@ export function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   const [_user, setUser] = useState({});
-  const [_token, setToken] = useState(sessionStorage.getItem('toca-token'));
+  const [_token, setToken] = useState(JSON.parse(sessionStorage.getItem('toca-token')));
 
   useEffect(() => {
-    sessionStorage.setItem('toca-token', _token);
+    if (_token) {
+      getCurrentUser().then(({ data: user }) => {
+        setUser(user);
+      });
+    }
   }, [_token]);
 
   function handleLogin(email, password) {
     return new Promise((_, reject) => {
       login(email, password)
-        .then(({ data: user }) => {
-          setToken(user.token);
-          setUser(user);
+        .then(({ data: loginData }) => {
+          setToken({ token: loginData.token });
+          sessionStorage.setItem('toca-token', JSON.stringify({ token: loginData.token }));
           navigate('/');
         })
         .catch((error) => {
@@ -38,7 +42,8 @@ export function AuthProvider({ children }) {
   }
 
   const handleLogout = useCallback(() => {
-    setToken('');
+    setToken(null);
+    sessionStorage.removeItem('toca-token');
     window.location.href = '/login';
   });
 

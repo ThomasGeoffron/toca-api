@@ -17,12 +17,18 @@ export default function HeatmapChart() {
           .filter((event) => event.url === _buttonSelected)
           .map((movement) => ({
             url: movement.url,
-            x: movement.position.x,
-            y: movement.position.y,
+            x: Math.round(movement.position.x),
+            y: Math.round(movement.position.y),
           }))
           .reduce((acc, pos) => {
             const existingPairIndex = acc.findIndex(
-              ({ x, y }) => x === pos.x && y === pos.y,
+              // ({ x, y }) => x === pos.x && y === pos.y,
+              ({ x, y }) => (
+                x >= pos.x - 50
+                && x <= pos.x + 50
+                && y >= pos.y - 50
+                && y <= pos.y + 50
+              ),
             );
 
             if (existingPairIndex === -1) {
@@ -45,15 +51,10 @@ export default function HeatmapChart() {
         const heatmapInstance = Heatmap.create({
           container: divRef.current,
           backgroundColor: 'black',
-          radius: 20,
+          radius: 100,
           maxOpacity: 1,
-          minOpacity: 0.06,
+          minOpacity: 0,
           blur: 0.75,
-          // gradient: {
-          //   ".5": "#60D394",
-          //   ".8": "#AAF683",
-          //   ".95": "#EE6055",
-          // },
         });
         heatmapInstance.setData(dataPoints);
         heatmapInstance.repaint();
@@ -68,15 +69,13 @@ export default function HeatmapChart() {
   return (
     <>
       <Label
-        htmlFor="button"
-        value="Choississez une url pour voir les heatmaps"
+        value="Choississez la page pour voir sa heatmap"
       />
       <Select
-        id="button"
         className="w-1/4  m-auto mb-4 "
         onChange={(e) => handleEditChart(e.target.value)}
       >
-        <option value="">Select a button</option>
+        <option value="">---</option>
         {Array.from(
           new Set(_mouseMouvementEvent.map((event) => event.url)),
         ).map((button) => (
@@ -87,7 +86,7 @@ export default function HeatmapChart() {
       </Select>
 
       <div className="">
-        {_buttonSelected != '' ? (
+        {_buttonSelected !== '' ? (
           <div
             ref={divRef}
             style={{ position: 'relative', width: '100%', height: 600 }}

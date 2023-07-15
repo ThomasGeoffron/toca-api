@@ -11,6 +11,8 @@
   "rules": {
     "react/jsx-one-expression-per-line": "off",
     "react/prop-types": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "no-underscore-dangle": "off",
+    "no-extra-boolean-cast": "off"
   }
 }

@@ -7,8 +7,8 @@ import { useAuth } from '../hooks/auth';
 export default function Login() {
   const { login, token } = useAuth();
 
-  const [_email, setEmail] = useState("");
-  const [_password, setPassword] = useState("");
+  const [_email, setEmail] = useState('');
+  const [_password, setPassword] = useState('');
   const [_error, setError] = useState();
 
   useEffect(() => {
@@ -80,4 +80,3 @@ export default function Login() {
     </div>
   );
 }
-

@@ -2,13 +2,13 @@ const mongoose = require('mongoose')
 const { PageViews } = require('../../models')
 
 const findAll = async (req, res) => {
-  const pageViews = await PageViews.find({ appId: req.user._id })
+  const pageViews = await PageViews.find({ appId: req.user.id })
 
   res.status(200).json(pageViews)
 }
 
 const findOne = async (req, res) => {
-  const pageView = await PageViews.findOne({ _id: req.params.id, appId: req.user._id })
+  const pageView = await PageViews.findOne({ _id: req.params.id, appId: req.user.id })
 
   if (!pageView) return res.status(404).json({ message: 'PageView not found' })
 

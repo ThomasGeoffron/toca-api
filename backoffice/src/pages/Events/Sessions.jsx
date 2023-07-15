@@ -1,12 +1,19 @@
+import { Card } from 'flowbite-react';
 import React, { useEffect, useState } from 'react';
+import { TbAlarm, TbAlarmPlus, TbAlarmMinus } from 'react-icons/tb';
 import { findAllSessions } from '../../api/events/sessions';
 
-function Counter({ name, count }) {
+function Counter({
+  name, count, Icon, color,
+}) {
   return (
-    <div className="flex flex-col justify-center items-center">
+    <Card className="flex flex-col justify-center items-center">
+      <div className="flex justify-center">
+        <Icon size="50" color={color} />
+      </div>
       <span>{name}</span>
       <h2 className="text-4xl ">~{count} sec.</h2>
-    </div>
+    </Card>
   );
 }
 
@@ -37,9 +44,9 @@ export default function TrackingEvents() {
 
   return (
     <div className="flex justify-center items-center gap-20">
-      <Counter name="Session min." count={_sessionMin} />
-      <Counter name="Temps de session moyen" count={_sessionAvg} />
-      <Counter name="Session max." count={_sessionMax} />
+      <Counter name="Session min." count={_sessionMin} Icon={TbAlarmMinus} color="red" />
+      <Counter name="Temps de session moyen" count={_sessionAvg} Icon={TbAlarm} color="green" />
+      <Counter name="Session max." count={_sessionMax} Icon={TbAlarmPlus} color="orange" />
     </div>
   );
 }
