@@ -1,8 +1,6 @@
 const { Users } = require('../models')
 
 const secret = async (req, res, next) => {
-  console.log(req.body)
-
   const appId = req.body.credentials.appId
   const appSecret = req.body.credentials.appSecret
 
