@@ -1,35 +1,36 @@
-import axios from "axios";
+import axios from 'axios';
 
 const URL = import.meta.env.VITE_API_URL;
 
-function get_headers(token) {
+function getHeaders() {
   const headers = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   };
 
-  if (token) {
-    headers["Authorization"] = token;
+  const jwt = JSON.parse(sessionStorage.getItem('toca-token'));
+  if (jwt) {
+    headers.Authorization = `Bearer ${jwt.token}`;
   }
 
   return headers;
 }
 
-export function _get(path, token) {
-  const headers = get_headers(token);
+export function _get(path) {
+  const headers = getHeaders();
   return axios.get(URL + path, { headers });
 }
 
-export function _post(path, body, token) {
-  const headers = get_headers(token);
+export function _post(path, body) {
+  const headers = getHeaders();
   return axios.post(URL + path, body, { headers });
 }
 
-export function _patch(path, body, token) {
-  const headers = get_headers(token);
+export function _patch(path, body) {
+  const headers = getHeaders();
   return axios.patch(URL + path, body, { headers });
 }
 
-export function _delete(path, token) {
-  const headers = get_headers(token);
+export function _delete(path) {
+  const headers = getHeaders();
   return axios.delete(URL + path, { headers });
 }

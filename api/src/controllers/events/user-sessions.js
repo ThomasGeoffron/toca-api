@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const { UsersSessions } = require('../../models')
 
 const findAll = async (req, res) => {
-  const userSessions = await UsersSessions.find({ appId: req.user._id })
+  const userSessions = await UsersSessions.find({ appId: req.user.id })
 
   res.status(200).json(userSessions)
 }

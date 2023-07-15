@@ -12,22 +12,31 @@ const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
-}))
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+  })
+)
 app.use(errorHandler)
 
-mongoose.connect(process.env.MONGO_URL, {
-  useUnifiedTopology: true,
-  useNewUrlParser: true
-})
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+  })
   .then(() => console.log('Connected succesfully !'))
   .catch((error) => console.error(error))
 
 mongoose.connection.once('open', () => {
   // eslint-disable-next-line no-unused-vars
-  const { Users, UsersSessions, PageViews, TrackingEvents, MouseMovementEvents } = require('./models')
+  const {
+    Users,
+    UsersSessions,
+    PageViews,
+    TrackingEvents,
+    MouseMovementEvents
+  } = require('./models')
 
   const auth = require('./middleware/auth')
   const admin = require('./middleware/admin')
@@ -44,6 +53,8 @@ mongoose.connection.once('open', () => {
   // Users
 
   const users = require('./controllers/users')
+
+  app.get('/me', auth, users.me)
 
   app.get('/users', admin, users.findAll)
 

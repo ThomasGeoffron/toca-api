@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 
 const generateToken = (jwtProps) => {
   const token = jwt.sign(
@@ -6,19 +6,19 @@ const generateToken = (jwtProps) => {
       id: jwtProps.id,
       company: jwtProps.company,
       email: jwtProps.email,
-      isAdmin: jwtProps.isAdmin
+      isAdmin: jwtProps.isAdmin,
+      appSecret: jwtProps.appSecret,
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: '1h'
+      expiresIn: "3000h",
     }
-  )
-  return token
-}
+  );
+  return token;
+};
 
 const verifyJwt = (token) => {
-  const decoded = jwt.verify(token, process.env.JWT_SECRET)
-  return decoded
-}
+  return jwt.verify(token.replace("Bearer ", ""), process.env.JWT_SECRET);
+};
 
-module.exports = { generateToken, verifyJwt }
+module.exports = { generateToken, verifyJwt };

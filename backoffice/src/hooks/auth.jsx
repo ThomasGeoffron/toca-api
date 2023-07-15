@@ -5,63 +5,57 @@ import React, {
   useEffect,
   useMemo,
   useState,
-} from "react";
+} from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { login } from "@api/auth/auth";
+import { getCurrentUser, login } from '../api/auth/auth';
 
 const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }) {
+  const navigate = useNavigate();
+
   const [_user, setUser] = useState({});
-  const [_token, setToken] = useState(
-    JSON.parse(sessionStorage.getItem("motonreel-token"))
-  );
-
-  const eventSource = React.useMemo(() => {
-    if (_user.id && !_user.isAdmin) {
-      const es = new EventSource(import.meta.env.VITE_API_URL + "/events");
-
-      es.onmessage = function (event) {
-        alertInfo("ANNONCE DE LA PLATEFORME : " + event.data);
-      };
-
-      return es;
-    }
-  }, [_user.id]);
+  const [_token, setToken] = useState(JSON.parse(sessionStorage.getItem('toca-token')));
 
   useEffect(() => {
-    sessionStorage.setItem("motonreel-token", JSON.stringify(_token));
+    if (_token) {
+      getCurrentUser().then(({ data: user }) => {
+        setUser(user);
+      });
+    }
   }, [_token]);
 
   function handleLogin(email, password) {
     return new Promise((_, reject) => {
       login(email, password)
-        .then(({ data: user }) => {
-          setToken("Bearer " + user.token);
-          location.href = "/";
+        .then(({ data: loginData }) => {
+          setToken({ token: loginData.token });
+          sessionStorage.setItem('toca-token', JSON.stringify({ token: loginData.token }));
+          navigate('/');
         })
         .catch((error) => {
-          reject(error.response.data);
+          reject(error?.response?.data?.message || 'Une erreur est survenue');
         });
     });
   }
 
   const handleLogout = useCallback(() => {
     setToken(null);
-    if (eventSource) eventSource.close();
-    location.href = "/login";
-  }, [eventSource]);
+    sessionStorage.removeItem('toca-token');
+    window.location.href = '/login';
+  });
 
   const value = useMemo(
     () => ({
       token: _token,
-      setToken: setToken,
+      setToken,
       user: _user,
       login: handleLogin,
       logout: handleLogout,
     }),
-    [_token, _user]
+    [_token, _user],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

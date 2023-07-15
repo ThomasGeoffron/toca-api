@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
-import { Button } from "flowbite-react";
+import React, { useEffect, useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
+import { Button } from 'flowbite-react';
 
-import { useAuth } from "@hooks/auth";
+import { useAuth } from '../hooks/auth';
 
 export default function Login() {
   const { login, token } = useAuth();
 
-  const [_email, setEmail] = useState("");
-  const [_password, setPassword] = useState("");
+  const [_email, setEmail] = useState('');
+  const [_password, setPassword] = useState('');
   const [_error, setError] = useState();
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function Login() {
     if (!(_email && _password)) return;
 
     login(_email, _password).catch((error) => {
-      setError(error.message);
+      setError(error);
     });
   }
 
@@ -43,9 +43,9 @@ export default function Login() {
           <p className="text-red-600 font-bold mb-10">{_error}</p>
           <form onSubmit={handleLogin} className="flex flex-col w-full items-center mb-2">
             <div className="mb-6">
-              <label htmlFor="email" className="block mb-2 text-sm font-medium text-left">
+              <span className="block mb-2 text-sm font-medium text-left">
                 Email :
-              </label>
+              </span>
               <input
                 type="email"
                 id="email"
@@ -56,9 +56,9 @@ export default function Login() {
               />
             </div>
             <div className="mb-6">
-              <label htmlFor="pwd" className="block mb-2 text-sm font-medium text-left">
+              <span className="block mb-2 text-sm font-medium text-left">
                 Mot de passe :
-              </label>
+              </span>
               <input
                 type="password"
                 id="password"
@@ -72,7 +72,7 @@ export default function Login() {
               Se connecter
             </Button>
           </form>
-          <Link to={"/register"} className="text-md underline">
+          <Link to="/register" className="text-md underline">
             <small>Créer un compte</small>
           </Link>
         </div>
